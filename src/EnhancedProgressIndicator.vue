@@ -6,7 +6,7 @@
         :average="average"
         v-bind="$attrs">
         <template v-slot:above
-            v-if="emptyindicator && percentage < 5">
+            v-if="emptyIndicator && percentage < 5">
             <div class="level-item">
                 <span class="icon"
                     :class="[inverted ? 'has-text-success' : 'has-text-danger']">

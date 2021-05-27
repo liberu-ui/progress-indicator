@@ -1,3 +1,4 @@
 import ProgressIndicator from './src/ProgressIndicator.vue';
+import EnhancedProgressIndicator from './src/EnhancedProgressIndicator.vue';
 
-export default ProgressIndicator;
+export { ProgressIndicator, EnhancedProgressIndicator};

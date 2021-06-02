@@ -2,14 +2,13 @@
     <progress-indicator
         :value="value"
         :percentage="percentage"
-        :fill-color="color"
         :average="average"
-        v-bind="$attrs">
+        :fill-color="color">
         <template v-slot:above
             v-if="emptyIndicator && percentage < 5">
             <div class="level-item">
                 <span class="icon"
-                    :class="[inverted ? 'has-text-success' : 'has-text-danger']">
+                    :style="{'color': color}">
                     <fa :icon="inverted ? 'check-circle' : 'exclamation-circle'"
                         size="sm"/>
                 </span>
@@ -19,10 +18,10 @@
 </template>
 
 <script>
-import ProgressIndicator from './ProgressIndicator.vue'
-
+import Gradient from 'javascript-color-gradient';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import ProgressIndicator from './ProgressIndicator.vue';
 
 library.add(faCheckCircle, faExclamationCircle);
 
@@ -35,17 +34,17 @@ export default {
 
     props: {
         aboveThresholdColor: {
-            default: '#00AA13',
-            type: String
+            default: '#0DFF00',
+            type: String,
         },
         average: {
             default: null,
             type: Number,
-            validator: value => value >= 0 && value <= 100
+            validator: value => value >= 0 && value <= 100,
         },
         belowThresholdColor: {
-            default: '#FF6666',
-            type: String
+            default: '#FF0000',
+            type: String,
         },
         emptyIndicator: {
             default: false,
@@ -54,44 +53,69 @@ export default {
         percentage: {
             required: true,
             type: Number,
-            validator: value => value >= 0 && value <= 100
+            validator: value => value >= 0 && value <= 100,
         },
         inverted: {
             default: false,
-            type: Boolean
+            type: Boolean,
         },
         thresholdColor: {
-            default: '#1E90FF',
-            type: String
+            default: '#F7DD57',
+            type: String,
         },
         tolerance: {
             required: true,
             type: Number,
-            validator: value => value >= 0 && value <= 100
+            validator: value => value >= 0 && value <= 100,
         },
         value: {
             required: true,
-            type: Number
-        }
-    },
-
-    computed: {
-        color() {
-            if (this.average < (this.percentage - this.tolerance)) {
-                return this.inverted 
-                    ? this.belowThresholdColor
-                    : this.aboveThresholdColor;
-            }
-
-            if (this.average > (this.percentage + this.tolerance)) {
-                return this.inverted
-                    ? this.aboveThresholdColor
-                    : this.belowThresholdColor;
-            }
-
-            return this.thresholdColor;
+            type: Number,
         },
     },
 
+    data: () => ({
+        gradientObject: new Gradient(),
+    }),
+
+    computed: {
+        aboveAverage() {
+            return this.percentage > (this.average + this.tolerance);
+        },
+
+        color() {
+            if (this.inThreshold) {
+                return this.thresholdColor;
+            }
+
+            this.setGradients();
+
+            return this.gradientObject.getColor(this.gradientIndex);
+        },
+
+        gradientIndex() {
+            const index = this.aboveAverage
+                ? Math.round((this.percentage - this.average) / (100 - this.average) * 100)
+                : Math.round((this.average - this.percentage) / this.average * 100);
+
+            return index || 1;
+        },
+
+        inThreshold() {
+            return Math.abs(this.percentage - this.average) <= this.tolerance;
+        },
+    },
+    methods: {
+        setGradients() {
+            this.gradientObject.setMidpoint(100);
+
+            //eslint-disable-next-line no-bitwise
+            const colors = this.aboveAverage ^ this.inverted
+                ? [this.thresholdColor, this.aboveThresholdColor]
+                : [this.thresholdColor, this.belowThresholdColor];
+
+            this.gradientObject.setGradient(...colors);
+        },
+    },
 };
 </script>

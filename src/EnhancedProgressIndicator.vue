@@ -75,25 +75,13 @@ export default {
     },
 
     data: () => ({
-        gradientObject: new Gradient(),
+        color: null,
+        gradient: new Gradient(),
     }),
 
     computed: {
         aboveAverage() {
             return this.percentage > (this.average + this.tolerance);
-        },
-        color() {
-            //eslint-disable-next-line no-bitwise
-            const colors = this.aboveAverage ^ this.inverted
-                ? [this.thresholdColor, this.aboveThresholdColor]
-                : [this.thresholdColor, this.belowThresholdColor];
-
-            this.gradientObject.setMidpoint(100)
-                .setGradient(...colors);
-
-            return this.inThreshold 
-                ? this.thresholdColor
-                : this.gradientObject.getColor(this.gradientIndex);
         },
         gradientIndex() {
             const index = this.aboveAverage
@@ -104,6 +92,26 @@ export default {
         },
         inThreshold() {
             return Math.abs(this.percentage - this.average) <= this.tolerance;
+        },
+    },
+
+    created() {
+        this.init();
+    },
+
+    methods: {
+        init() {
+            //eslint-disable-next-line no-bitwise
+            const colors = this.aboveAverage ^ this.inverted
+                ? [this.thresholdColor, this.aboveThresholdColor]
+                : [this.thresholdColor, this.belowThresholdColor];
+
+            this.gradient.setMidpoint(100)
+                .setGradient(...colors);  
+
+            this.color = this.inThreshold 
+                ? this.thresholdColor
+                : this.gradient.getColor(this.gradientIndex);
         },
     },
 };

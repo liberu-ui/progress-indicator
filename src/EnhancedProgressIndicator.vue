@@ -4,7 +4,7 @@
         :percentage="percentage"
         :average="average"
         :fill-color="color">
-        <template #:above
+        <template #above
             v-if="emptyIndicator && percentage < 5">
             <div class="level-item">
                 <span class="icon"
@@ -40,7 +40,7 @@ export default {
         average: {
             default: null,
             type: Number,
-            validator: (value) => value >= 0 && value <= 100,
+            validator: value => value >= 0 && value <= 100,
         },
         belowThresholdColor: {
             default: '#FF0000',
@@ -53,7 +53,7 @@ export default {
         percentage: {
             required: true,
             type: Number,
-            validator: (value) => value >= 0 && value <= 100,
+            validator: value => value >= 0 && value <= 100,
         },
         inverted: {
             default: false,
@@ -66,7 +66,7 @@ export default {
         tolerance: {
             required: true,
             type: Number,
-            validator: (value) => value >= 0 && value <= 100,
+            validator: value => value >= 0 && value <= 100,
         },
         value: {
             required: true,

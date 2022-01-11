@@ -4,7 +4,7 @@
         :percentage="percentage"
         :average="average"
         :fill-color="color">
-        <template v-slot:above
+        <template #above
             v-if="emptyIndicator && percentage < 5">
             <div class="level-item">
                 <span class="icon"
@@ -101,15 +101,15 @@ export default {
 
     methods: {
         init() {
-            //eslint-disable-next-line no-bitwise
+            // eslint-disable-next-line no-bitwise
             const colors = this.aboveAverage ^ this.inverted
                 ? [this.thresholdColor, this.aboveThresholdColor]
                 : [this.thresholdColor, this.belowThresholdColor];
 
             this.gradient.setMidpoint(100)
-                .setGradient(...colors);  
+                .setGradient(...colors);
 
-            this.color = this.inThreshold 
+            this.color = this.inThreshold
                 ? this.thresholdColor
                 : this.gradient.getColor(this.gradientIndex);
         },

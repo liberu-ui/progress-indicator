@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { FontAwesomeIcon as Fa } from '@fortawesome/vue-fontawesome';
 import Gradient from 'javascript-color-gradient';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
@@ -29,6 +30,7 @@ export default {
     name: 'EnhancedProgressIndicator',
 
     components: {
+        Fa,
         ProgressIndicator,
     },
 

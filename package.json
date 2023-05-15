@@ -1,5 +1,5 @@
 {
-  "name": "@cgdsoftware/progress-indicator",
+  "name": "@liberu-ui/progress-indicator",
   "version": "2.0.5",
   "description": "Unopinionated Progress Indicator",
   "main": "index.js",

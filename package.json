@@ -1,6 +1,6 @@
 {
   "name": "@liberu-ui/progress-indicator",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "Unopinionated Progress Indicator",
   "main": "index.js",
   "scripts": {
